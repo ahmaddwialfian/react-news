@@ -1,31 +1,41 @@
 import React from 'react'
+import axios from 'axios'
 import logo from '../assets/img/logo.svg'
-import { CardDeck, Card, Button, Row, Col } from 'react-bootstrap';
+import { Media, Button } from 'react-bootstrap';
 
 const NewsItem = ({ news }) => {
+    let isi = null;
     return (
-        <Row>
-            {news.map(
-                (row, i) => (
-                    <Col md={4}>
-                        <Card>
-                            <Card.Img variant="top" src={row.photo} style={{ width: 250 }} />
-                            <Card.Body>
-                                <Card.Title>{row.title}</Card.Title>
-                                <Card.Text>
-                                    {row.content}
-                                </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                                <small className="text-muted">Last updated 3 mins ago</small>
-                            </Card.Footer>
-                        </Card>
-                    </Col>
-
+        <div>
+            {
+                news.map(
+                    (row, i) => (
+                        <div>
+                            <Media>
+                                <img width={150} height={150} className="mr-3" src={row.photo} onError={(e) => { e.target.onerror = null; e.target.src = "nopic.png" }} />
+                                <Media.Body>
+                                    <h2>{row.title}</h2>
+                                    <span className="text-muted">Author <strong>{row.user.username}</strong>, {row.created_at}</span>
+                                    <hr />
+                                    {row.content.length > 150 ?
+                                        (
+                                            <div style={{ align: 'justify' }}>
+                                                {`${row.content.substring(0, 100)}...`}
+                                                <div className="float-right">
+                                                    <br />
+                                                    <Button variant="info">Read more</Button>
+                                                </div>
+                                            </div>
+                                        ) :
+                                        <p>{row.content}</p>}
+                                </Media.Body>
+                            </Media>
+                            <hr />
+                        </div>
+                    )
                 )
-            )
             }
-        </Row>
+        </div >
     )
 }
 export default NewsItem;

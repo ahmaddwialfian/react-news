@@ -28,8 +28,9 @@ const NewsList = () => {
     return (
         <Container>
             <h1>News Timeline</h1>
+            <hr />
             <NewsItem news={news}></NewsItem>
-        </Container>
+        </Container >
     );
 }
 
