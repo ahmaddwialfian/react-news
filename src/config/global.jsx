@@ -23,6 +23,11 @@ export const action = {
         'path': '/news',
         'auth': false
     },
+    'detail': {
+        'method': 'GET',
+        'path': '/news/',
+        'auth': false
+    },
     'listbylogin': {
         'method': 'GET',
         'path': '/news-by-user',

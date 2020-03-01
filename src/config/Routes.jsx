@@ -12,6 +12,7 @@ import Header from '../components/Header';
 import NewsList from '../pages/NewsList';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import NewsDetail from '../pages/NewsDetail';
 
 const route = [
     {
@@ -19,22 +20,25 @@ const route = [
         name: "News List",
         component: NewsList,
         exact: "exact",
+        menu: true
     },
-    // {
-    //     path: "/news",
-    //     name: "Detail News",
-    //     component: NewsDetail,
-    //     checkLogin: true
-    // },
+    {
+        path: "/news/:id",
+        name: "Detail News",
+        component: NewsDetail,
+        menu: false
+    },
     {
         path: "/login",
         name: "Login",
         component: Login,
+        menu: true
     },
     {
         path: "/register",
         name: "Register",
         component: Register,
+        menu: true
     }
 ]
 
@@ -46,12 +50,13 @@ const Routes = () => {
     return (
         <Router>
             <div>
-                <Header route={route}></Header>
+                <Header routes={route}></Header>
             </div>
             <Switch>
                 {route.map((route, i) => (
                     <RouteWithSubRoutes key={i} {...route} />
                 ))}
+                <Route path="*"><NewsList></NewsList></Route>
             </Switch >
         </Router >
     );

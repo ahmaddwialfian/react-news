@@ -1,7 +1,8 @@
 import React from 'react'
-import axios from 'axios'
-import logo from '../assets/img/logo.svg'
 import { Media, Button } from 'react-bootstrap';
+import {
+    Link, NavLink
+} from "react-router-dom";
 
 const NewsItem = ({ news }) => {
     let isi = null;
@@ -10,7 +11,7 @@ const NewsItem = ({ news }) => {
             {
                 news.map(
                     (row, i) => (
-                        <div>
+                        <div key={i}>
                             <Media>
                                 <img width={150} height={150} className="mr-3" src={row.photo} onError={(e) => { e.target.onerror = null; e.target.src = "nopic.png" }} />
                                 <Media.Body>
@@ -23,15 +24,19 @@ const NewsItem = ({ news }) => {
                                                 {`${row.content.substring(0, 100)}...`}
                                                 <div className="float-right">
                                                     <br />
-                                                    <Button variant="info">Read more</Button>
+                                                    <Link to={() => ("news/" + row.id)}><Button variant="info">Read more</Button></Link>
                                                 </div>
                                             </div>
                                         ) :
                                         <p>{row.content}</p>}
+                                    <div className="float-right">
+                                        <br />
+                                        <Link to={() => ("news/" + row.id)}><Button variant="info">Read more</Button></Link>
+                                    </div>
                                 </Media.Body>
                             </Media>
                             <hr />
-                        </div>
+                        </div >
                     )
                 )
             }

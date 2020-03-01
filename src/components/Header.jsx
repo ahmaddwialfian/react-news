@@ -4,7 +4,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 import {
     Link, NavLink
 } from "react-router-dom";
-const Sidebar = ({ route }) => {
+const Sidebar = ({ routes }) => {
     return (
         <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="/">
@@ -18,8 +18,12 @@ const Sidebar = ({ route }) => {
                 React Bootstrap
             </Navbar.Brand>
             <Nav className="mr-auto">
-                {route.map((route, i) => (
-                    <NavLink to={route.path} className="nav-link">{route.name}</NavLink>
+                {routes.map((route, i) => (
+                    <div>
+                        {route.menu ?
+                            <NavLink key={i} to={route.path} className="nav-link" > {route.name}</NavLink>
+                            : ''}
+                    </div>
                 ))}
             </Nav>
         </Navbar >
