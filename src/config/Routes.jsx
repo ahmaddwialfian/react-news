@@ -13,6 +13,7 @@ import NewsList from '../pages/NewsList';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import NewsDetail from '../pages/NewsDetail';
+import NewsCreate from '../pages/NewsCreate';
 
 const route = [
     {
@@ -20,41 +21,67 @@ const route = [
         name: "News List",
         component: NewsList,
         exact: "exact",
-        menu: true
+        menu: {
+            afterlogin: true,
+            beforelogin: true
+        }
     },
     {
         path: "/news/:id",
         name: "Detail News",
         component: NewsDetail,
-        menu: false
+        menu: {
+            afterlogin: false,
+            beforelogin: false
+        }
+    },
+    {
+        path: "/mynews",
+        name: "Ny News",
+        component: NewsCreate,
+        menu: {
+            afterlogin: true,
+            beforelogin: false
+        }
     },
     {
         path: "/login",
         name: "Login",
         component: Login,
-        menu: true
+        menu: {
+            afterlogin: false,
+            beforelogin: true
+        }
     },
     {
         path: "/register",
         name: "Register",
         component: Register,
-        menu: true
+        menu: {
+            afterlogin: false,
+            beforelogin: true
+        }
     }
 ]
 
 const Routes = () => {
-    const [login, setLogin] = useState(false);
-    const loginAction = () => {
-        setLogin(!login);
+    const [isLogedin, setIsLogedin] = useState(localStorage.getItem('token'));
+    const actionLogout = () => {
+        localStorage.setItem('token','')
+        setIsLogedin('');
+    }
+    const actionLogin = (token) => {
+        localStorage.setItem('token',token)
+        setIsLogedin(token);
     }
     return (
         <Router>
             <div>
-                <Header routes={route}></Header>
+                <Header routes={route} isLogedin={isLogedin} login={actionLogin} logout={actionLogout}></Header>
             </div>
             <Switch>
                 {route.map((route, i) => (
-                    <RouteWithSubRoutes key={i} {...route} />
+                    <RouteWithSubRoutes key={i} {...route} isLogedin={isLogedin} login={actionLogin} logout={actionLogout} />
                 ))}
                 <Route path="*"><NewsList></NewsList></Route>
             </Switch >
@@ -63,12 +90,14 @@ const Routes = () => {
 }
 
 const RouteWithSubRoutes = (route) => {
+
+    console.log(route);
     return (
         <Route
             exact
             path={route.path}
             render={props => (
-                <route.component {...props} routes={route.routes} />
+                <route.component {...props} isLogedin={route.isLogedin} login={route.login} logout={route.logout} routes={route.routes} />
             )}
         />
     );

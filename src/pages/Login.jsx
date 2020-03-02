@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
 import { axiosNews, action } from '../config/global';
+import {
+    Redirect
+} from "react-router-dom";
 
-const Login = () => {
+const Login = ({isLogedin,login,logout}) => {
     const defaultTemp = {
         username: null,
         password: null
@@ -36,7 +39,13 @@ const Login = () => {
                     data: temp
                 });
                 const { data } = response;
-                console.log(data);
+                if(data.error){
+                    alert(data.message)
+                }
+                else{
+                    alert('Login Berhasil');
+                    login(data.meta.token);
+                }
             } catch (error) {
 
             }
@@ -48,6 +57,7 @@ const Login = () => {
 
     return (
         <Container>
+            {isLogedin?<Redirect to="/"/>:''}
             <h1 className="text-center">Login</h1>
             <Row>
                 <Col md={{ span: 6, offset: 3 }}>
