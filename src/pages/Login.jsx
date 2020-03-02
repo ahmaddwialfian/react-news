@@ -30,7 +30,7 @@ const Login = ({ isLogedin, login, logout }) => {
     }
 
     const performLogin = async () => {
-        if (temp.username && temp.password) {
+        if (temp.username.trim() && temp.password) {
             try {
                 const response = await axiosNews({
                     method: action.login.method,
@@ -50,7 +50,7 @@ const Login = ({ isLogedin, login, logout }) => {
 
             }
         } else {
-
+            alert('Username dan Password harap diisi');
         }
     };
 

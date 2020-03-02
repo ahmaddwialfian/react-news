@@ -3,6 +3,8 @@ import { Media, Button } from 'react-bootstrap';
 import {
     Link, NavLink
 } from "react-router-dom";
+import moment from 'moment';
+import 'moment/locale/id';
 
 const NewsItem = ({ news }) => {
     let isi = null;
@@ -16,7 +18,7 @@ const NewsItem = ({ news }) => {
                                 <img width={150} height={150} className="mr-3" src={row.photo} onError={(e) => { e.target.onerror = null; e.target.src = "nopic.png" }} />
                                 <Media.Body>
                                     <h2>{row.title}</h2>
-                                    <span className="text-muted">Author <strong>{row.user.username}</strong>, {row.created_at}</span>
+                                    <span className="text-muted">Author <strong>{row.user.username}</strong>, {moment(row.created_at).fromNow()}</span>
                                     <hr />
                                     {row.content.length > 150 ?
                                         (

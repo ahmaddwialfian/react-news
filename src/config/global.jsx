@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// export const BaseURLNews = 'http://learn.hackatown.online/api';
-export const BaseURLNews = 'http://localhost:8000/api';
+export const BaseURLNews = 'http://learn.hackatown.online/api';
+// export const BaseURLNews = 'http://localhost:8000/api';
 
 export const action = {
     'register': {

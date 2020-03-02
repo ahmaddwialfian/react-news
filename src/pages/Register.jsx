@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
 import { axiosNews, action } from '../config/global';
 import {
     Redirect
 } from "react-router-dom";
 
-const Register = ({isLogedin,login,logout}) => {
+const Register = ({ isLogedin, login, logout }) => {
     const defaultTemp = {
         username: null,
         password: null,
@@ -39,62 +39,66 @@ const Register = ({isLogedin,login,logout}) => {
     }
 
     const performRegister = async () => {
-        if (temp.username && temp.password && temp.passwordconfirm && temp.password==temp.passwordconfirm) {
-            try {
-                const response = await axiosNews({
-                    method: action.register.method,
-                    url: action.register.path,
-                    headers: { 'Content-Type': 'application/json' },
-                    data: {
-                        username: temp.username,
-                        password: temp.password
+        if (temp.username.trim() && temp.password && temp.passwordconfirm) {
+            if (temp.password == temp.passwordconfirm) {
+                try {
+                    const response = await axiosNews({
+                        method: action.register.method,
+                        url: action.register.path,
+                        headers: { 'Content-Type': 'application/json' },
+                        data: {
+                            username: temp.username,
+                            password: temp.password
+                        }
+                    });
+                    const { data } = response;
+                    if (data.error) {
+                        alert(data.message)
                     }
-                });
-                const { data } = response;
-                if(data.error){
-                    alert(data.message)
-                }
-                else{
-                    alert('Register Berhasil')
-                    login(data.meta.token);
-                }
-            } catch (error) {
+                    else {
+                        alert('Register Berhasil')
+                        login(data.meta.token);
+                    }
+                } catch (error) {
 
+                }
+            } else {
+                alert('Password dan Konfirmasi Password tidak sesuai');
             }
         } else {
-
+            alert('Username, Password dan Konfirmasi Password harap diisi');
         }
     };
     return (
         <Container>
-            {isLogedin?<Redirect to="/"/>:''}
+            {isLogedin ? <Redirect to="/" /> : ''}
             <h1 className="text-center">Register</h1>
             <Row>
                 <Col md={{ span: 6, offset: 3 }}>
                     <Card>
                         <Card.Body>
-                            <Form  onSubmit={event => {
+                            <Form onSubmit={event => {
                                 event.preventDefault();
                                 performRegister();
                             }}
                             >
                                 <Form.Group controlId="formBasicEmail">
                                     <Form.Label>Username</Form.Label>
-                                    <Form.Control type="text" placeholder="Type Username" 
-                                    onChange={handleInputUsername}
-                                    autoFocus={true}
+                                    <Form.Control type="text" placeholder="Type Username"
+                                        onChange={handleInputUsername}
+                                        autoFocus={true}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" placeholder="Type Password" 
-                                    onChange={handleInputPassword}
+                                    <Form.Control type="password" placeholder="Type Password"
+                                        onChange={handleInputPassword}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="formBasicPasswordConfirm">
                                     <Form.Label>Password Confirmation</Form.Label>
                                     <Form.Control type="password" placeholder="Type Password Confirmation"
-                                    onChange={handleInputPasswordKonfirm}
+                                        onChange={handleInputPasswordKonfirm}
                                     />
                                 </Form.Group>
                                 <div className="text-center">
