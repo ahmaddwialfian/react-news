@@ -9,10 +9,29 @@ import {
 } from "react-router-dom";
 
 const NewsEdit = () => {
-    const [isCreated, setIsCreated] = useState(false);
+    const [isEdited, setIsEdited] = useState(false);
     const [temp, setTemp] = useState();
-
+    
     axiosNews.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+
+    const { id } = useParams();
+
+    useEffect(() => {
+        fetchDetailNewsAsync()
+    }, []);
+
+    const fetchDetailNewsAsync = async () => {
+        try {
+            const response = await axiosNews({
+                method: action.detail.method,
+                url: action.detail.path + id
+            });
+            const { data } = response;
+            setTemp(data.data);
+        } catch (error) {
+
+        }
+    }
 
     const handleInputTitle = event => {
         setTemp(
@@ -38,18 +57,18 @@ const NewsEdit = () => {
             bodyFormData.set('content', temp.content);
 
             const response = await axiosNews({
-                method: action.createnews.method,
-                url: action.createnews.path,
+                method: action.updatenews.method,
+                url: action.updatenews.path + id,
                 headers: { 'Content-Type': 'multipart/form-data' },
                 data: bodyFormData
             });
             const { data } = response;
-            if (data.error) {
+            if(data.error){
                 alert(data.message)
             }
-            else {
+            else{
                 alert(data.message)
-                setIsCreated(true);
+                setIsEdited(true);
             }
         } catch (error) {
 
@@ -58,10 +77,12 @@ const NewsEdit = () => {
 
     return (
         <Container>
-            {isCreated?<Redirect to="mynews"></Redirect>:''}
-            <h1>News Create</h1>
+            {isEdited?<Redirect to="../mynews"></Redirect>:''}
+            <h1>News Edit</h1>
             <hr />
-            <NewsForm news={temp}  save={perfromSave} titleChange={handleInputTitle} contentChange={handleInputContent} />
+            {temp ? (
+                <NewsForm news={temp} save={perfromSave} titleChange={handleInputTitle} contentChange={handleInputContent} />
+            ) : ""}
         </Container >
     );
 }

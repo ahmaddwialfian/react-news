@@ -13,7 +13,9 @@ import NewsList from '../pages/NewsList';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import NewsDetail from '../pages/NewsDetail';
+import NewsEdit from '../pages/NewsEdit';
 import NewsCreate from '../pages/NewsCreate';
+import MyNews from '../pages/MyNews';
 
 const route = [
     {
@@ -37,8 +39,8 @@ const route = [
     },
     {
         path: "/mynews",
-        name: "Ny News",
-        component: NewsCreate,
+        name: "My News",
+        component: MyNews,
         menu: {
             afterlogin: true,
             beforelogin: false
@@ -60,6 +62,24 @@ const route = [
         menu: {
             afterlogin: false,
             beforelogin: true
+        }
+    },
+    {
+        path: "/newsedit/:id",
+        name: "Edit News",
+        component: NewsEdit,
+        menu: {
+            afterlogin: false,
+            beforelogin: false
+        }
+    },
+    {
+        path: "/newscreate",
+        name: "Create News",
+        component: NewsCreate,
+        menu: {
+            afterlogin: false,
+            beforelogin: false
         }
     }
 ]
@@ -91,7 +111,6 @@ const Routes = () => {
 
 const RouteWithSubRoutes = (route) => {
 
-    console.log(route);
     return (
         <Route
             exact

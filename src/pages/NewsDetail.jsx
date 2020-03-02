@@ -23,7 +23,6 @@ const NewsDetail = () => {
             });
             const { data } = response;
             setNews(data.data);
-            console.log(news)
         } catch (error) {
 
         }

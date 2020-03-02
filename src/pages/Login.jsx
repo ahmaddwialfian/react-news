@@ -5,7 +5,7 @@ import {
     Redirect
 } from "react-router-dom";
 
-const Login = ({isLogedin,login,logout}) => {
+const Login = ({ isLogedin, login, logout }) => {
     const defaultTemp = {
         username: null,
         password: null
@@ -39,10 +39,10 @@ const Login = ({isLogedin,login,logout}) => {
                     data: temp
                 });
                 const { data } = response;
-                if(data.error){
+                if (data.error) {
                     alert(data.message)
                 }
-                else{
+                else {
                     alert('Login Berhasil');
                     login(data.meta.token);
                 }
@@ -57,7 +57,7 @@ const Login = ({isLogedin,login,logout}) => {
 
     return (
         <Container>
-            {isLogedin?<Redirect to="/"/>:''}
+            {isLogedin ? <Redirect to="/" /> : ''}
             <h1 className="text-center">Login</h1>
             <Row>
                 <Col md={{ span: 6, offset: 3 }}>
@@ -70,13 +70,13 @@ const Login = ({isLogedin,login,logout}) => {
                             >
                                 <Form.Group controlId="formBasicEmail">
                                     <Form.Label>Username</Form.Label>
-                                    <Form.Control type="text" placeholder="Masukkan Username"
+                                    <Form.Control type="text" placeholder="Type Username"
                                         onChange={handleInputUsername}
                                         autoFocus={true} />
                                 </Form.Group>
                                 <Form.Group controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" placeholder="Masukkan Password"
+                                    <Form.Control type="password" placeholder="Type Password"
                                         onChange={handleInputPassword} />
                                 </Form.Group>
                                 <div className="text-center">

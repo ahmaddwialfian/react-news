@@ -33,6 +33,16 @@ export const action = {
         'method': 'GET',
         'path': '/news-by-user',
         'auth': true
+    },
+    'deletenews': {
+        'method': 'DELETE',
+        'path': '/news/',
+        'auth': true
+    },
+    'updatenews': {
+        'method': 'POST',
+        'path': '/news/',
+        'auth': true
     }
 }
 

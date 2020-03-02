@@ -4,15 +4,16 @@ import {
     Link, NavLink
 } from "react-router-dom";
 
-const NewsTable = ({ news }) => {
+const NewsTable = ({ news, performDelete }) => {
+   
     return (
         <div>
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th width="25%">Judul</th>
-                        <th width="60%">isi</th>
-                        <th>Aksi</th>
+                        <th width="25%">Title</th>
+                        <th width="60%">Content</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,9 +23,9 @@ const NewsTable = ({ news }) => {
                                 <tr key={i}>
                                     <td>{row.title}</td>
                                     <td>{row.content}</td>
-                                    <td nowrap>
-                                        <Button type="button" variant="warning">Ubah</Button> &nbsp;
-                                        <Button type="button" variant="danger">Hapus</Button>
+                                    <td nowrap="true">
+                                        <Link to={() => ("newsedit/" + row.id)}><Button type="button" variant="warning">Edit</Button></Link> &nbsp;
+                                        <Button type="button" variant="danger" onClick={()=>performDelete(row.id)}>Delete</Button>
                                     </td>
                                 </tr>
                             )

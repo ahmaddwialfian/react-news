@@ -15,7 +15,7 @@ const Sidebar = ({ routes, isLogedin, login, logout }) => {
                     height="30"
                     className="d-inline-block align-top"
                 />{' '}
-                React Bootstrap
+                <strong>NEWS - Sevima Academy</strong>
             </Navbar.Brand>
             <Nav className="mr-auto">
                 {routes.map((route, i) => (

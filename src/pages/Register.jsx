@@ -58,7 +58,6 @@ const Register = ({isLogedin,login,logout}) => {
                     alert('Register Berhasil')
                     login(data.meta.token);
                 }
-                console.log(data);
             } catch (error) {
 
             }
@@ -81,20 +80,20 @@ const Register = ({isLogedin,login,logout}) => {
                             >
                                 <Form.Group controlId="formBasicEmail">
                                     <Form.Label>Username</Form.Label>
-                                    <Form.Control type="text" placeholder="Masukkan Username" 
+                                    <Form.Control type="text" placeholder="Type Username" 
                                     onChange={handleInputUsername}
                                     autoFocus={true}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" placeholder="Masukkan Password" 
+                                    <Form.Control type="password" placeholder="Type Password" 
                                     onChange={handleInputPassword}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="formBasicPasswordConfirm">
-                                    <Form.Label>Konfirmasi Password</Form.Label>
-                                    <Form.Control type="password" placeholder="Masukkan Konfirmasi Password"
+                                    <Form.Label>Password Confirmation</Form.Label>
+                                    <Form.Control type="password" placeholder="Type Password Confirmation"
                                     onChange={handleInputPasswordKonfirm}
                                     />
                                 </Form.Group>
