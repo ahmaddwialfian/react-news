@@ -8,8 +8,8 @@ const NewsTable = ({ news, performDelete }) => {
 
     return (
         <div>
-            <Table striped bordered hover>
-                <thead>
+            <Table striped bordered hover responsive>
+                <thead >
                     <tr>
                         <th width="25%">Title</th>
                         <th width="60%">Content</th>
