@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Card, Row, Col, Modal } from 'react-bootstrap';
 import { axiosNews, action } from '../config/global';
 import {
     Redirect
 } from "react-router-dom";
 
-const Login = ({ isLogedin, login, logout }) => {
+const Login = ({ user, isLogedin, login, logout }) => {
     const defaultTemp = {
         username: null,
         password: null
     };
     const [temp, setTemp] = useState(defaultTemp);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleInputUsername = event => {
         setTemp(
@@ -30,6 +31,7 @@ const Login = ({ isLogedin, login, logout }) => {
     }
 
     const performLogin = async () => {
+        setIsLoading(true);
         if (temp.username.trim() && temp.password) {
             try {
                 const response = await axiosNews({
@@ -44,20 +46,27 @@ const Login = ({ isLogedin, login, logout }) => {
                 }
                 else {
                     alert('Login Berhasil');
-                    login(data.meta.token);
+                    login(data.meta.token,data.data.username);
                 }
             } catch (error) {
-
             }
         } else {
             alert('Username dan Password harap diisi');
         }
+        setIsLoading(false);
     };
 
 
     return (
         <Container>
-            {isLogedin ? <Redirect to="/" /> : ''}
+            {isLogedin ? <Redirect to="/mynews" /> : ''}
+            <Modal
+                size="sm"
+                show={isLoading}
+                aria-labelledby="example-modal-sizes-title-sm"
+            >
+                <Modal.Body>Loading...</Modal.Body>
+            </Modal>
             <h1 className="text-center">Login</h1>
             <Row>
                 <Col md={{ span: 6, offset: 3 }}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Card, Row, Col, Modal } from 'react-bootstrap';
 import { axiosNews, action } from '../config/global';
 import {
     Redirect
@@ -12,6 +12,7 @@ const Register = ({ isLogedin, login, logout }) => {
         passwordconfirm: null
     };
     const [temp, setTemp] = useState(defaultTemp);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleInputUsername = event => {
         setTemp(
@@ -39,6 +40,7 @@ const Register = ({ isLogedin, login, logout }) => {
     }
 
     const performRegister = async () => {
+        setIsLoading(true);
         if (temp.username.trim() && temp.password && temp.passwordconfirm) {
             if (temp.password == temp.passwordconfirm) {
                 try {
@@ -50,17 +52,30 @@ const Register = ({ isLogedin, login, logout }) => {
                             username: temp.username,
                             password: temp.password
                         }
+                    }).catch(function (error) {
+                        return error.response;
                     });
                     const { data } = response;
                     if (data.error) {
                         alert(data.message)
+                    }
+                    else if (data.errors) {
+                        let errorMessage = '';
+                        if (data.errors.username)
+                            data.errors.username.map((row, i) =>
+                                errorMessage += row
+                            );
+                        if (data.errors.password)
+                            data.errors.password.map((row, i) =>
+                                errorMessage += row
+                            );
+                        alert(errorMessage);
                     }
                     else {
                         alert('Register Berhasil')
                         login(data.meta.token);
                     }
                 } catch (error) {
-
                 }
             } else {
                 alert('Password dan Konfirmasi Password tidak sesuai');
@@ -68,10 +83,18 @@ const Register = ({ isLogedin, login, logout }) => {
         } else {
             alert('Username, Password dan Konfirmasi Password harap diisi');
         }
+        setIsLoading(false);
     };
     return (
         <Container>
-            {isLogedin ? <Redirect to="/" /> : ''}
+            {isLogedin ? <Redirect to="/mynews" /> : ''}
+            <Modal
+                size="sm"
+                show={isLoading}
+                aria-labelledby="example-modal-sizes-title-sm"
+            >
+                <Modal.Body>Loading...</Modal.Body>
+            </Modal>
             <h1 className="text-center">Register</h1>
             <Row>
                 <Col md={{ span: 6, offset: 3 }}>

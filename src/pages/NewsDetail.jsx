@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Container, Form, Button, Card } from 'react-bootstrap';
+import { Container, Form, Button, Card, Modal } from 'react-bootstrap';
 import NewsItem from '../components/NewsItem';
 import { axiosNews, action } from '../config/global';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 
 const NewsDetail = () => {
     const [news, setNews] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     const { id } = useParams();
 
@@ -22,14 +23,22 @@ const NewsDetail = () => {
                 url: action.detail.path + id
             });
             const { data } = response;
+            setIsLoading(false);
             setNews(data.data);
         } catch (error) {
-
+            setIsLoading(false);
         }
     }
 
     return (
         <Container>
+            <Modal
+                size="sm"
+                show={isLoading}
+                aria-labelledby="example-modal-sizes-title-sm"
+            >
+                <Modal.Body>Loading...</Modal.Body>
+            </Modal>
             {news ? (
                 <Card>
                     <Card.Body>

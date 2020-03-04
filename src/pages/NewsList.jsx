@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Container, Form, Button, Modal } from 'react-bootstrap';
 import NewsItem from '../components/NewsItem';
 import { axiosNews, action } from '../config/global';
 import { useState } from 'react';
@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 const NewsList = () => {
     const [news, setNews] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchNewsAsync()
@@ -19,14 +20,22 @@ const NewsList = () => {
                 url: action.list.path
             });
             const { data } = response;
+            setIsLoading(false);
             setNews(data.data);
         } catch (error) {
-
+            setIsLoading(false);
         }
     }
 
     return (
         <Container>
+            <Modal
+                size="sm"
+                show={isLoading}
+                aria-labelledby="example-modal-sizes-title-sm"
+            >
+                <Modal.Body>Loading...</Modal.Body>
+            </Modal>
             <h1>News Timeline</h1>
             <hr />
             <NewsItem news={news}></NewsItem>

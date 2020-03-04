@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Modal } from 'react-bootstrap';
 import NewsTable from '../components/NewsTable';
 import { axiosNews, action } from '../config/global';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 const MyNews = ({ isLogedin, login, logout }) => {
+    const [isLoading, setIsLoading] = useState(true);
     const [news, setNews] = useState([]);
     if (action.listbylogin.auth)
         axiosNews.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
@@ -21,12 +22,22 @@ const MyNews = ({ isLogedin, login, logout }) => {
             const response = await axiosNews({
                 method: action.listbylogin.method,
                 url: action.listbylogin.path
+            }).catch(function (error) {
+                return error.response;
             });
             const { data } = response;
-            setNews(data.data);
-        } catch (error) {
+            if (data.error) {
 
+            } 
+            else if(data.message){
+                alert('Harap login terlebih dahulu')
+                logout();
+            } else {
+                setNews(data.data);
+            }
+        } catch (error) {
         }
+        setIsLoading(false);
     }
 
     const performDelete = async (id) => {
@@ -35,6 +46,8 @@ const MyNews = ({ isLogedin, login, logout }) => {
                 const response = await axiosNews({
                     method: action.deletenews.method,
                     url: action.deletenews.path + id
+                }).catch(function (error) {
+                    return error.response;
                 });
                 const { data } = response;
                 if (data.error) {
@@ -53,6 +66,13 @@ const MyNews = ({ isLogedin, login, logout }) => {
     return (
         <Container>
             {!isLogedin ? <Redirect to="/" /> : ''}
+            <Modal
+                size="sm"
+                show={isLoading}
+                aria-labelledby="example-modal-sizes-title-sm"
+            >
+                <Modal.Body>Loading...</Modal.Body>
+            </Modal>
             <h1>News By Me</h1>
             <hr />
             <Link to="newscreate"><Button variant="success">Add News</Button></Link>

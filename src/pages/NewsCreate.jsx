@@ -8,11 +8,17 @@ import {
     Redirect, Link
 } from "react-router-dom";
 
-const NewsEdit = () => {
+const NewsCreate = ({ isLogedin, login, logout }) => {
     const [isCreated, setIsCreated] = useState(false);
-    const [temp, setTemp] = useState();
+    const defaultTemp = {
+        title: null,
+        content: null,
+        photo: null,
+        photoInput: null
+    }
+    const [temp, setTemp] = useState(defaultTemp);
+    const [isLoading, setIsLoading] = useState(false);
 
-    axiosNews.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
     const handleInputTitle = event => {
         setTemp(
@@ -30,40 +36,74 @@ const NewsEdit = () => {
             }
         )
     }
+    const handleInputImage = event => {
+        setTemp(
+            {
+                ...temp,
+                photo: URL.createObjectURL(event.target.files[0]),
+                photoInput: event.target.files[0]
+            }
+        )
+    }
 
     const perfromSave = async () => {
+        axiosNews.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+        setIsLoading(true);
         try {
             let bodyFormData = new FormData();
-            bodyFormData.set('title', temp.title);
-            bodyFormData.set('content', temp.content);
+            if (temp.title)
+                bodyFormData.set('title', temp.title);
+            if (temp.content)
+                bodyFormData.set('content', temp.content);
+            if (temp.photoInput)
+                bodyFormData.set('photo', temp.photoInput);
 
             const response = await axiosNews({
                 method: action.createnews.method,
                 url: action.createnews.path,
                 headers: { 'Content-Type': 'multipart/form-data' },
                 data: bodyFormData
+            }).catch(function (error) {
+                return error.response;
             });
             const { data } = response;
             if (data.error) {
                 alert(data.message)
             }
+            else if (data.errors) {
+                let errorMessage = '';
+                if (data.errors.title)
+                    data.errors.title.map((row, i) =>
+                        errorMessage += row + "\n"
+                    );
+                if (data.errors.content)
+                    data.errors.content.map((row, i) =>
+                        errorMessage += row + "\n"
+                    );
+                if (data.errors.photo)
+                    data.errors.photo.map((row, i) =>
+                        errorMessage += row + "\n"
+                    );
+                alert(errorMessage);
+            }
             else {
                 alert(data.message)
-                setIsCreated(true);
+                setIsCreated(true)
             }
         } catch (error) {
-
         }
+        setIsLoading(false);
     }
 
     return (
         <Container>
-            {isCreated?<Redirect to="mynews"></Redirect>:''}
+            {!isLogedin ? <Redirect to="/" /> : ''}
+            {isCreated ? <Redirect to="mynews"></Redirect> : ''}
             <h1>News Create</h1>
             <hr />
-            <NewsForm news={temp}  save={perfromSave} titleChange={handleInputTitle} contentChange={handleInputContent} />
+            <NewsForm news={temp} save={perfromSave} titleChange={handleInputTitle} contentChange={handleInputContent} imageChange={handleInputImage} isLoading={isLoading} />
         </Container >
     );
 }
 
-export default NewsEdit;
+export default NewsCreate;

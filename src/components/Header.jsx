@@ -1,10 +1,10 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import logo from '../assets/img/logo.svg'
 import { Navbar, Nav } from 'react-bootstrap';
 import {
     Link, NavLink
 } from "react-router-dom";
-const Sidebar = ({ routes, isLogedin, login, logout }) => {
+const Sidebar = ({ routes, user, isLogedin, login, logout }) => {
     return (
         <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="/">
@@ -22,18 +22,29 @@ const Sidebar = ({ routes, isLogedin, login, logout }) => {
                     <div>
                         {
                             isLogedin ? (
-                        route.menu.afterlogin ?
-                            <NavLink key={i} to={route.path} className="nav-link" > {route.name}</NavLink>
-                            : '')
-                            :
-                            route.menu.beforelogin ?
-                            <NavLink key={i} to={route.path} className="nav-link" > {route.name}</NavLink>
-                            : ''
+                                route.menu.afterlogin ?
+                                    <NavLink key={i} to={route.path} className="nav-link" > {route.name}</NavLink>
+                                    : '')
+                                :
+                                route.menu.beforelogin ?
+                                    <NavLink key={i} to={route.path} className="nav-link" > {route.name}</NavLink>
+                                    : ''
                         }
                     </div>
                 ))}
-                {isLogedin?<Nav.Link className="nav-link" onClick={logout}>Logout</Nav.Link>:''}
+                {isLogedin ? <Nav.Link className="nav-link" onClick={() => window.confirm("Apakah anda yakin akan logout") ? logout() : ''}>Logout</Nav.Link> : ''}
             </Nav>
+            {
+                localStorage.getItem('username')
+                    ?
+                    <Nav>
+                        <Nav.Link>
+                            <strong>Hai {localStorage.getItem('username')}</strong>
+                        </Nav.Link>
+                    </Nav>
+                    :
+                    ''
+            }
         </Navbar >
     );
 }
