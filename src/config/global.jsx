@@ -49,3 +49,13 @@ export const action = {
 export const axiosNews = axios.create({
     baseURL: BaseURLNews
 });
+
+
+export const axiosNewsUser = () => {
+    const token = localStorage.getItem('token');
+
+    return axios.create({
+        baseURL: BaseURLNews,
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
+};

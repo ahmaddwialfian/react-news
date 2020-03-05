@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container, Form, Button, Card } from 'react-bootstrap';
 import NewsForm from '../components/NewsForm';
-import { axiosNews, action } from '../config/global';
+import { axiosNewsUser, action } from '../config/global';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -27,7 +27,7 @@ const NewsEdit = ({ isLogedin, login, logout }) => {
 
     const fetchDetailNewsAsync = async () => {
         try {
-            const response = await axiosNews({
+            const response = await axiosNewsUser()({
                 method: action.detail.method,
                 url: action.detail.path + id
             });
@@ -66,7 +66,6 @@ const NewsEdit = ({ isLogedin, login, logout }) => {
     }
 
     const perfromSave = async () => {
-        axiosNews.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
         setIsLoading(true);
         try {
             let bodyFormData = new FormData();
@@ -75,7 +74,7 @@ const NewsEdit = ({ isLogedin, login, logout }) => {
             if (temp.photoInput)
                 bodyFormData.set('photo', temp.photoInput);
 
-            const response = await axiosNews({
+            const response = await axiosNewsUser()({
                 method: action.updatenews.method,
                 url: action.updatenews.path + id,
                 headers: { 'Content-Type': 'multipart/form-data' },

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container, Button, Modal } from 'react-bootstrap';
 import NewsTable from '../components/NewsTable';
-import { axiosNews, action } from '../config/global';
+import { axiosNewsUser, action } from '../config/global';
 import { useState } from 'react';
 import {
     Redirect, Link
@@ -10,8 +10,6 @@ import {
 const MyNews = ({ isLogedin, login, logout }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [news, setNews] = useState([]);
-    if (action.listbylogin.auth)
-        axiosNews.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
     useEffect(() => {
         fetchNewsAsync()
@@ -19,7 +17,7 @@ const MyNews = ({ isLogedin, login, logout }) => {
 
     const fetchNewsAsync = async () => {
         try {
-            const response = await axiosNews({
+            const response = await axiosNewsUser()({
                 method: action.listbylogin.method,
                 url: action.listbylogin.path
             }).catch(function (error) {
@@ -43,7 +41,7 @@ const MyNews = ({ isLogedin, login, logout }) => {
     const performDelete = async (id) => {
         if (window.confirm('Apakah anda yakin akan menghapus berita ini?')) {
             try {
-                const response = await axiosNews({
+                const response = await axiosNewsUser({
                     method: action.deletenews.method,
                     url: action.deletenews.path + id
                 }).catch(function (error) {
