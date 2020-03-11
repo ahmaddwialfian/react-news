@@ -7,7 +7,9 @@ import moment from 'moment';
 import 'moment/locale/id';
 
 const NewsItem = ({ news }) => {
-    let isi = null;
+    const divJustify = {
+        align: 'justify'
+    };
     return (
         <div>
             {
@@ -22,7 +24,7 @@ const NewsItem = ({ news }) => {
                                     <hr />
                                     {row.content.length > 150 ?
                                         (
-                                            <div style={{ align: 'justify' }}>
+                                            <div style={divJustify}>
                                                 {`${row.content.substring(0, 100)}...`}
                                                 <div className="float-right">
                                                     <br />
